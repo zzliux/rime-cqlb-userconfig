@@ -1,0 +1,223 @@
+# Rime schema settings
+# encoding: utf-8
+
+schema:
+  schema_id: cqlb
+  name: "超强两笔"
+  version: "1.0"
+  author:
+    - 付东升
+  description: |
+    超强两笔。按 i 键临时拼音或者用拼音反查编码
+  dependencies:
+    - english
+
+menu:
+  page_size: 10 #候选项数，超强用了eiouv选重，即最高共六重码，所以本方案最低建议采用固定六候选的方式
+
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: [ 中文, 西文 ]
+  - name: full_shape
+    states: [ 半角, 全角 ]
+  - name: ascii_punct
+    states: [ 。，, ．， ]
+  - name: zh_trad
+    reset: 0
+    states: [ 简,繁 ]
+  - name: jiayin # 以形查音
+    reset: 1
+  - name: emoji_suggestion
+    reset: 0
+    states: ["🈚️", "🈶"]
+
+engine:
+  processors:
+    - ascii_composer
+#    - lua_processor@submit_text_processor # 完善[ ] \ / 键多候选顶屏问题
+    - recognizer
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - "affix_segmentor@mkst"
+    - "affix_segmentor@veng" #临时英文
+    - "affix_segmentor@zhuyin_fix"
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - reverse_lookup_translator
+    - table_translator
+    - "table_translator@fixed"
+    - "table_translator@mkst"
+    - "table_translator@zhuyin_fix"
+    - "lua_translator@helper"
+    - "lua_translator@time_date"
+    - table_translator@veng
+    - history_translator@historyz
+  filters:
+    - reverse_lookup_filter@i_reverse_lookup
+    - simplifier
+    - "simplifier@jiayin"
+    - uniquifier
+    - "simplifier@emoji_suggestion"
+
+speller:
+  alphabet: 'abcdefghijklmnopqrstuvwxyz;,./'
+  initials: 'abcdefghijklmnopqrstuvwxyz'
+  delimiter: "`"
+  auto_clear: max_length #manual|auto|max_length 空码按下一键确认清屏|空码自动清|达到最长码时后码顶上清屏
+  auto_select: true 
+  # max_code_length: 4 
+  # auto_select_pattern: "^.{4}$|^.{2}$"
+  algebra: ##
+    - derive/^(i.*[zcs])h(.*$)/$1$2/
+    - derive/^(i.*[zcs])([^h].*$)/$1h$2	1/
+    - derive/^(i.*[ie]n)g(.*$)/$1$2/
+    - derive/^(i.*[ie]n)([^g].*$)/$1g$2	1/
+
+    - derive/^(i.*[zcs])h(.*$)/$1$2/
+    - derive/^(i.*[zcs])([^h].*$)/$1h$2	1/
+    - derive/^(i.*[ie]n)g(.*$)/$1$2/
+    - derive/^(i.*[ie]n)([^g].*$)/$1g$2	1/
+
+translator:
+  dictionary: cqlb.src
+#  prism: cqlb
+#  db_class: tabledb
+  initial_quality: 0
+  enable_charset_filter: true
+  enable_encoder: false
+  enable_completion: true
+  enable_sentence: false
+  encode_commit_history: false
+  enable_user_dict: false
+  max_phrase_length: 4
+  disable_user_dict_for_patterns:
+    - "^[ivu].*$"
+    - "^.*$"
+  preedit_format:
+    - xform/^i(.*)/$1/
+    - xform/^v/z/
+  comment_format:
+    - xform/~/ /
+
+historyz:
+  input: uj
+  size: 1 
+  initial_quality: 0
+  
+fixed:
+  __include: /translator
+  initial_quality: -1000
+  enable_encoder: true
+  enable_user_dict: true
+  db_class: userdb
+  disable_user_dict_for_patterns:
+    - "^.{1,3}$"
+  
+mkst:
+  __include: /translator
+  initial_quality: 10
+  enable_sentence: true
+  prefix: '`'
+  tips: "〔精准造词〕"
+  tag: mkst
+
+zhuyin_fix:
+  __include: /translator
+  prefix: '~'
+  tips: "〔以形查音〕"
+  tag: zhuyin_fix
+
+simplifier:
+  opencc_config: s2t.json
+  option_name: zh_trad
+
+jiayin:
+  opencc_config: jiayin.json
+  option_name: jiayin
+  show_in_comment: true
+  comment_format:
+    - "xform/<br>/\r/"
+    - "xform/&nbsp/ /"
+  tags:
+#   - abc
+    - zhuyin_fix
+  tips: all 
+
+emoji_suggestion:
+  opencc_config: emoji.json
+  option_name: emoji_suggestion
+  tips: all
+  
+veng:
+  dictionary: english
+  tag: veng
+  prefix: "'"
+  suffix: " "
+  tips: "〔临时英文〕"
+  enable_completion: true
+  enable_encoder: false
+  enable_user_dict: false
+  enable_sentence: false
+  initial_quality: -1
+  
+
+punctuator:
+  import_preset: default
+  full_shape:
+    "/" : "、"
+  half_shape:
+    "/" : "、"
+
+key_binder:
+  import_preset: default
+  bindings:
+    - {accept: "Shift+space", toggle: noop, when: always}
+
+recognizer:
+  import_preset: default
+  patterns:
+    i_reverse_lookup_pattern: "^i.[a-z]+$"
+    mkst: "^[a-z]*`[a-z`]*$"
+    zhuyin_fix: "~[a-z]*?$"
+    email: "^[A-Za-z][-_.0-9A-Za-z]*@.*$"
+    helper: '^help$'
+    punct: "^/([0-9]0?|[A-Za-z]+)$"
+    uppercase: "[A-Z][-_+.'0-9A-Za-z]*$"
+    url: "^(www[.]|https?:|ftp[.:]|mailto:|file:).*$"
+    veng: "^'.*$"
+#    xxx: "^[^v].[a-z,/;]{2}$"
+
+
+
+
+i_reverse_lookup:
+  tags: [ i_reverse_lookup_pattern ]
+  dictionary: cqlb.src
+  overwrite_comment: true
+  comment_format: &comment
+    - xform/(^|\W)(\w{2,3})\W(\2\w+)/$1$3/
+    - xform/(^|\W)(\w{2,3})\W(\2\w+)/$1$3/
+    - xform/(^|\W)(\w{2,3})\W(\2\w+)/$1$3/
+
+    - xform/(^|\W)([^uioav])\W(\2\w+)/$1$3/
+
+    - xform/(\W)[ivu]\w+//
+    - xform/(^)[ivu]\w+\W/$1/
+    - xform/(^)[ivu]\w+$//
+
+    - xform/ /\ |\ /
+    - xform/$/\] /
+    - xform/^/ \[/
+
+

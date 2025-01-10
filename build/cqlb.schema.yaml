@@ -1,0 +1,332 @@
+__build_info:
+  rime_version: 1.11.2
+  timestamps:
+    cqlb.custom: 0
+    cqlb.schema: 1736515939
+    default: 1736513875
+    default.custom: 1736516271
+    key_bindings: 1625102022
+    key_bindings.custom: 0
+    punctuation: 1736512429
+    punctuation.custom: 0
+emoji_suggestion:
+  opencc_config: emoji.json
+  option_name: emoji_suggestion
+  tips: all
+engine:
+  filters:
+    - "reverse_lookup_filter@i_reverse_lookup"
+    - simplifier
+    - "simplifier@jiayin"
+    - uniquifier
+    - "simplifier@emoji_suggestion"
+  processors:
+    - ascii_composer
+    - recognizer
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - "affix_segmentor@mkst"
+    - "affix_segmentor@veng"
+    - "affix_segmentor@zhuyin_fix"
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - reverse_lookup_translator
+    - table_translator
+    - "table_translator@fixed"
+    - "table_translator@mkst"
+    - "table_translator@zhuyin_fix"
+    - "lua_translator@helper"
+    - "lua_translator@time_date"
+    - "table_translator@veng"
+    - "history_translator@historyz"
+fixed:
+  comment_format:
+    - "xform/~/ /"
+  db_class: userdb
+  dictionary: cqlb.src
+  disable_user_dict_for_patterns:
+    - "^.{1,3}$"
+  enable_charset_filter: true
+  enable_completion: true
+  enable_encoder: true
+  enable_sentence: false
+  enable_user_dict: true
+  encode_commit_history: false
+  initial_quality: "-1000"
+  max_phrase_length: 4
+  preedit_format:
+    - "xform/^i(.*)/$1/"
+    - "xform/^v/z/"
+historyz:
+  initial_quality: 0
+  input: uj
+  size: 1
+i_reverse_lookup:
+  comment_format:
+    - "xform/(^|\\W)(\\w{2,3})\\W(\\2\\w+)/$1$3/"
+    - "xform/(^|\\W)(\\w{2,3})\\W(\\2\\w+)/$1$3/"
+    - "xform/(^|\\W)(\\w{2,3})\\W(\\2\\w+)/$1$3/"
+    - "xform/(^|\\W)([^uioav])\\W(\\2\\w+)/$1$3/"
+    - "xform/(\\W)[ivu]\\w+//"
+    - "xform/(^)[ivu]\\w+\\W/$1/"
+    - "xform/(^)[ivu]\\w+$//"
+    - "xform/ /\\ |\\ /"
+    - "xform/$/\\] /"
+    - "xform/^/ \\[/"
+  dictionary: cqlb.src
+  overwrite_comment: true
+  tags:
+    - i_reverse_lookup_pattern
+jiayin:
+  comment_format:
+    - |
+      xform/<br>//
+    - "xform/&nbsp/ /"
+  opencc_config: jiayin.json
+  option_name: jiayin
+  show_in_comment: true
+  tags:
+    - zhuyin_fix
+  tips: all
+key_binder:
+  bindings:
+    - {accept: "Control+p", send: Up, when: composing}
+    - {accept: "Control+n", send: Down, when: composing}
+    - {accept: "Control+b", send: Left, when: composing}
+    - {accept: "Control+f", send: Right, when: composing}
+    - {accept: "Control+a", send: Home, when: composing}
+    - {accept: "Control+e", send: End, when: composing}
+    - {accept: "Control+d", send: Delete, when: composing}
+    - {accept: "Control+k", send: "Shift+Delete", when: composing}
+    - {accept: "Control+h", send: BackSpace, when: composing}
+    - {accept: "Control+g", send: Escape, when: composing}
+    - {accept: "Control+bracketleft", send: Escape, when: composing}
+    - {accept: "Control+y", send: Page_Up, when: composing}
+    - {accept: "Alt+v", send: Page_Up, when: composing}
+    - {accept: "Control+v", send: Page_Down, when: composing}
+    - {accept: ISO_Left_Tab, send: "Shift+Left", when: composing}
+    - {accept: "Shift+Tab", send: "Shift+Left", when: composing}
+    - {accept: Tab, send: "Shift+Right", when: composing}
+    - {accept: minus, send: Page_Up, when: has_menu}
+    - {accept: equal, send: Page_Down, when: has_menu}
+    - {accept: "Control+Shift+1", select: .next, when: always}
+    - {accept: "Control+Shift+2", toggle: ascii_mode, when: always}
+    - {accept: "Control+Shift+3", toggle: full_shape, when: always}
+    - {accept: "Control+Shift+4", toggle: simplification, when: always}
+    - {accept: "Control+Shift+5", toggle: extended_charset, when: always}
+    - {accept: "Control+Shift+exclam", select: .next, when: always}
+    - {accept: "Control+Shift+at", toggle: ascii_mode, when: always}
+    - {accept: "Control+Shift+numbersign", toggle: full_shape, when: always}
+    - {accept: "Control+Shift+dollar", toggle: simplification, when: always}
+    - {accept: "Control+Shift+percent", toggle: extended_charset, when: always}
+    - {accept: "Shift+space", toggle: noop, when: always}
+  import_preset: default
+menu:
+  page_size: 10
+mkst:
+  comment_format:
+    - "xform/~/ /"
+  dictionary: cqlb.src
+  disable_user_dict_for_patterns:
+    - "^[ivu].*$"
+    - "^.*$"
+  enable_charset_filter: true
+  enable_completion: true
+  enable_encoder: false
+  enable_sentence: true
+  enable_user_dict: false
+  encode_commit_history: false
+  initial_quality: 10
+  max_phrase_length: 4
+  preedit_format:
+    - "xform/^i(.*)/$1/"
+    - "xform/^v/z/"
+  prefix: "`"
+  tag: mkst
+  tips: "〔精准造词〕"
+punctuator:
+  full_shape:
+    " ": {commit: "　"}
+    "!": {commit: "！"}
+    "\"": {pair: ["“", "”"]}
+    "#": ["＃", "⌘"]
+    "$": ["￥", "$", "€", "£", "¥", "¢", "¤"]
+    "%": ["％", "°", "℃"]
+    "&": "＆"
+    "'": {pair: ["‘", "’"]}
+    "(": "（"
+    ")": "）"
+    "*": ["＊", "·", "・", "×", "※", "❂"]
+    "+": "＋"
+    ",": {commit: "，"}
+    "-": "－"
+    .: {commit: "。"}
+    "/": "、"
+    ":": {commit: "："}
+    ";": {commit: "；"}
+    "<": ["《", "〈", "«", "‹"]
+    "=": "＝"
+    ">": ["》", "〉", "»", "›"]
+    "?": {commit: "？"}
+    "@": ["＠", "☯"]
+    "[": ["「", "【", "〔", "［"]
+    "\\": ["、", "＼"]
+    "]": ["」", "】", "〕", "］"]
+    "^": {commit: "……"}
+    _: "——"
+    "`": "｀"
+    "{": ["『", "〖", "｛"]
+    "|": ["·", "｜", "§", "¦"]
+    "}": ["』", "〗", "｝"]
+    "~": "～"
+  half_shape:
+    "!": {commit: "！"}
+    "\"": {pair: ["“", "”"]}
+    "#": "#"
+    "$": ["￥", "$", "€", "£", "¥", "¢", "¤"]
+    "%": ["%", "％", "°", "℃"]
+    "&": "&"
+    "'": {pair: ["‘", "’"]}
+    "(": "（"
+    ")": "）"
+    "*": ["*", "＊", "·", "・", "×", "※", "❂"]
+    "+": "+"
+    ",": {commit: "，"}
+    "-": "-"
+    .: {commit: "。"}
+    "/": "、"
+    ":": {commit: "："}
+    ";": {commit: "；"}
+    "<": ["《", "〈", "«", "‹"]
+    "=": "="
+    ">": ["》", "〉", "»", "›"]
+    "?": {commit: "？"}
+    "@": "@"
+    "[": ["「", "【", "〔", "［"]
+    "\\": ["、", "\\", "＼"]
+    "]": ["」", "】", "〕", "］"]
+    "^": {commit: "……"}
+    _: "——"
+    "`": "`"
+    "{": ["『", "〖", "｛"]
+    "|": ["·", "|", "｜", "§", "¦"]
+    "}": ["』", "〗", "｝"]
+    "~": ["~", "～"]
+  import_preset: default
+recognizer:
+  import_preset: default
+  patterns:
+    email: "^[A-Za-z][-_.0-9A-Za-z]*@.*$"
+    helper: "^help$"
+    i_reverse_lookup_pattern: "^i.[a-z]+$"
+    mkst: "^[a-z]*`[a-z`]*$"
+    punct: "^/([0-9]0?|[A-Za-z]+)$"
+    uppercase: "[A-Z][-_+.'0-9A-Za-z]*$"
+    url: "^(www[.]|https?:|ftp[.:]|mailto:|file:).*$"
+    veng: "^'.*$"
+    zhuyin_fix: "~[a-z]*?$"
+schema:
+  author:
+    - "付东升"
+  dependencies:
+    - english
+  description: |
+    超强两笔。按 i 键临时拼音或者用拼音反查编码
+
+  name: "超强两笔"
+  schema_id: cqlb
+  version: 1.0
+simplifier:
+  opencc_config: s2t.json
+  option_name: zh_trad
+speller:
+  algebra:
+    - "derive/^(i.*[zcs])h(.*$)/$1$2/"
+    - "derive/^(i.*[zcs])([^h].*$)/$1h$2\t1/"
+    - "derive/^(i.*[ie]n)g(.*$)/$1$2/"
+    - "derive/^(i.*[ie]n)([^g].*$)/$1g$2\t1/"
+    - "derive/^(i.*[zcs])h(.*$)/$1$2/"
+    - "derive/^(i.*[zcs])([^h].*$)/$1h$2\t1/"
+    - "derive/^(i.*[ie]n)g(.*$)/$1$2/"
+    - "derive/^(i.*[ie]n)([^g].*$)/$1g$2\t1/"
+  alphabet: "abcdefghijklmnopqrstuvwxyz;,./"
+  auto_clear: max_length
+  auto_select: true
+  delimiter: "`"
+  initials: abcdefghijklmnopqrstuvwxyz
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: ["中文", "西文"]
+  - name: full_shape
+    states: ["半角", "全角"]
+  - name: ascii_punct
+    states: ["。，", "．，"]
+  - name: zh_trad
+    reset: 0
+    states: ["简", "繁"]
+  - name: jiayin
+    reset: 1
+  - name: emoji_suggestion
+    reset: 0
+    states: ["🈚️", "🈶"]
+translator:
+  comment_format:
+    - "xform/~/ /"
+  dictionary: cqlb.src
+  disable_user_dict_for_patterns:
+    - "^[ivu].*$"
+    - "^.*$"
+  enable_charset_filter: true
+  enable_completion: true
+  enable_encoder: false
+  enable_sentence: false
+  enable_user_dict: false
+  encode_commit_history: false
+  initial_quality: 0
+  max_phrase_length: 4
+  preedit_format:
+    - "xform/^i(.*)/$1/"
+    - "xform/^v/z/"
+veng:
+  dictionary: english
+  enable_completion: true
+  enable_encoder: false
+  enable_sentence: false
+  enable_user_dict: false
+  initial_quality: "-1"
+  prefix: "'"
+  suffix: " "
+  tag: veng
+  tips: "〔临时英文〕"
+zhuyin_fix:
+  comment_format:
+    - "xform/~/ /"
+  dictionary: cqlb.src
+  disable_user_dict_for_patterns:
+    - "^[ivu].*$"
+    - "^.*$"
+  enable_charset_filter: true
+  enable_completion: true
+  enable_encoder: false
+  enable_sentence: false
+  enable_user_dict: false
+  encode_commit_history: false
+  initial_quality: 0
+  max_phrase_length: 4
+  preedit_format:
+    - "xform/^i(.*)/$1/"
+    - "xform/^v/z/"
+  prefix: "~"
+  tag: zhuyin_fix
+  tips: "〔以形查音〕"

@@ -1,0 +1,6 @@
+patch:
+  schema_list:
+    - {schema: cqlb} #超强两笔
+  # "style/horizontal": true # 候选横排
+#  "style/font_face": "Microsoft YaHei" # 定义字体为微软雅黑
+#  "style/font_point": 13 # 字号为13号
