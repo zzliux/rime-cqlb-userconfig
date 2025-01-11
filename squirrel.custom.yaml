@@ -1,0 +1,5 @@
+patch:
+  # 本文件仅在鼠须管部署的下生效
+  # 参数说明：https://github.com/rime/squirrel/blob/master/data/squirrel.yaml
+  # 必须得通过xx/xx/xx这种方式将需要覆盖的参数铺到第一层，否则未铺到第一层的参数会失效
+  style/candidate_list_layout: linear # 候选词横向排列

@@ -13,7 +13,7 @@ schema:
     - english
 
 menu:
-  page_size: 10 #候选项数，超强用了eiouv选重，即最高共六重码，所以本方案最低建议采用固定六候选的方式
+  page_size: 5 #候选项数，超强用了eiouv选重，即最高共六重码，所以本方案最低建议采用固定六候选的方式
 
 switches:
   - name: ascii_mode
