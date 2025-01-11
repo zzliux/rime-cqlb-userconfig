@@ -2,4 +2,8 @@ patch:
   # 本文件仅在小狼毫部署的下生效
   # 参数说明 https://github.com/rime/weasel/blob/master/output/data/weasel.yaml
   # 必须得通过xx/xx/xx这种方式将需要覆盖的参数铺到第一层，否则未铺到第一层的参数会失效
+  style/inline_preedit: true # 内联编辑
   style/horizontal: true # 候选词横向排列（小狼毫和鼠须管参数不一样）
+  # style/layout/candidate_spacing: 5 # 候选词间距
+  style/layout/margin_x: 4 # 左右内边距
+  style/layout/margin_y: 4 # 上下内边距
